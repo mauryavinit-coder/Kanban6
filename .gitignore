@@ -1,0 +1,6 @@
+# Publish only the board and its notes; everything else stays local
+# (assessment .docx, .xlsx, Office lock files, .claude/ skills, notes).
+*
+!.gitignore
+!index.html
+!CLAUDE.md
