@@ -13,7 +13,7 @@ A single-file IT PMO Kanban board (`index.html`) for a **fictitious** bank's int
 - **No persistence**: no localStorage, sessionStorage, IndexedDB or cookies. State is in memory and resets to seed data on refresh. The header note says so; that is intended behaviour.
 - No external resources: no CDN scripts, web fonts or image files. Use the system font stack and Unicode/inline SVG icons.
 - The only network call is the FormSubmit AJAX POST in `notifyNewTask()`. Don't send the user's email anywhere else.
-- Branding: neutral "IT PMO" text wordmark and blue palette only. No real bank logos, trademarks or imitation of official systems. (The spec does require the `UOB-ITPM-####` ID format and the `[UOB IT PMO]` email subject.)
+- Branding: neutral "IT PMO" text wordmark and a blue/navy brand palette. No real bank logos, trademarks or imitation of official systems. (The spec does require the `UOB-ITPM-####` ID format and the `[UOB IT PMO]` email subject.) The per-category colours (`--cat-*`) were requested by the user and are the one exception to "blue only"; keep them off brand surfaces like the header.
 - No `alert()`/`confirm()` (delete uses an inline Yes/No toggle) and no `!important`. Every user-supplied string goes through `escapeHtml()` before it reaches `innerHTML`.
 
 ## Running / testing
@@ -22,7 +22,16 @@ There is no build, lint or test tooling. Open `index.html` in a browser.
 
 - The board works from `file://`, but **FormSubmit rejects requests from pages opened as files** (it returns HTTP 200 with `success: "false"`). To test real email delivery, serve the folder, e.g. `python -m http.server 8000`.
 - The endpoint is a placeholder (`YOUR_EMAIL@example.com`) until it is configured. FormSubmit also needs a one-time activation: the first submission sends a confirmation email to the address, and nothing is delivered until its link is clicked.
-- Verification so far has been manual, in a browser: dispatch clicks/`DragEvent`s from the console and inspect `state`.
+- Verification so far has been manual, in a browser: dispatch clicks/`DragEvent`s from the console and inspect `state` (e.g. `moveTask(state.tasks[0].id, "Done")`, then check the category cylinder's `--pct`).
+- Python is not installed on this machine (only the Microsoft Store stub), so `python -m http.server` and the `ui-ux-pro-max` skill's scripts won't run until it is.
+- The CSS uses `color-mix()` (category tags, cylinders), so it needs a current browser.
+
+## Repo and publishing
+
+- `.gitignore` is an allowlist: `*` is ignored, then only `.gitignore`, `index.html` and `CLAUDE.md` are un-ignored. A new file that should be published must be added to it with `!`.
+- The folder also holds the user's personal coursework (the assessment `.docx`, `SNAPS.xlsx`, `~$` lock files, screenshots, `AiConcepts.txt`). Never commit or publish those.
+- Commits use the GitHub noreply address set in the repo's local git config, not the user's personal email. Pushing goes through the `gh` CLI; check `gh auth status` for which account is signed in before creating a repo or pushing.
+- Project-level skills live in `.claude/skills/` (`frontend-design`, `ui-ux-pro-max`, `cybersecurity-analyst`). They were copied from their GitHub repos, are not committed, and their design advice is still bound by the hard constraints above (e.g. no web fonts or CDN links).
 
 ## Architecture (inside the `<script>`)
 
